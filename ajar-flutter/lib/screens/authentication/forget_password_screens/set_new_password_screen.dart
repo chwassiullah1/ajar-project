@@ -1,6 +1,7 @@
 import 'package:ajar/common/buttons/custom_gradient_button.dart';
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
-import 'package:ajar/common/textformfields/custom_text_form_field.dart';
+import 'package:ajar/common/text_form_fields/custom_text_form_field.dart';
 import 'package:ajar/providers/authentication/authentication_provider.dart';
 import 'package:ajar/providers/authentication/forget_password_provider.dart';
 import 'package:ajar/screens/authentication/login_screen/login_screen.dart';
@@ -24,9 +25,9 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
 
     return Consumer2<AuthenticationProvider, ForgetPasswordProvider>(
         builder: (context, authProvider, forgetPasswordProvider, child) {
-      return SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
+      return Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
@@ -54,7 +55,6 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                         
                           label: 'New Password',
                           controller: forgetPasswordProvider.passwordController,
                           obscureText: forgetPasswordProvider.obscurePassword,
@@ -82,7 +82,6 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
                         ),
                         const SizedBox(height: 10),
                         CustomTextFormField(
-                        
                           label: 'Re-type Password',
                           controller:
                               forgetPasswordProvider.passwordController2,
@@ -127,15 +126,15 @@ class _SetNewPasswordScreenState extends State<SetNewPasswordScreen> {
                             .then((statusCode) {
                           if (statusCode == 200) {
                             // Navigate to Login screen
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
+                            Navigator.of(context).pushReplacement(
+                              SlidePageRoute(
+                                page: const LoginScreen(),
                               ),
                             );
                             // Inform the user about the successful password reset
                             showCustomSnackBar(context,
                                 "Password reset successful!", Colors.green);
+                            forgetPasswordProvider.clearFields();
                           } else if (statusCode == 400) {
                             // Here you can customize the message handling based on specific errors
                             // For the sake of this example, show a general error message

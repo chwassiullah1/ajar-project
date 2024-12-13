@@ -32,13 +32,15 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      final response = await _authService.registerUser(
-        email: email,
-        phone: phone,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-      );
+      final response = await _authService
+          .registerUser(
+            email: email,
+            phone: phone,
+            password: password,
+            firstName: firstName,
+            lastName: lastName,
+          )
+          .timeout(const Duration(seconds: 10));
       _isLoading = false;
       notifyListeners();
       if (response.statusCode == 200) {
@@ -65,8 +67,9 @@ class AuthenticationProvider extends ChangeNotifier {
       notifyListeners();
 
       // Call the AuthService verifyAccount method
-      http.Response response =
-          await _authService.verifyAccount(email: email, otp: otp);
+      http.Response response = await _authService
+          .verifyAccount(email: email, otp: otp)
+          .timeout(const Duration(seconds: 10));
 
       // Stop loading state
       _isLoading = false;
@@ -101,8 +104,9 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await AuthService().login(
-          email: email, password: password); // Call the AuthService method
+      final response = await AuthService()
+          .login(email: email, password: password)
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
       print(
         response.statusCode,
       );
@@ -139,8 +143,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<int> getUserData() async {
     try {
-      final response =
-          await AuthService().getUserData(); // Call the AuthService method
+      final response = await AuthService()
+          .getUserData()
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -154,7 +159,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
       // Handle the case where access token is expired
       if (response.statusCode == 401) {
-        final refreshResponse = await _authService.refreshAccessToken();
+        final refreshResponse = await _authService
+            .refreshAccessToken()
+            .timeout(const Duration(seconds: 10));
         print("Refreshing access token");
         if (refreshResponse.statusCode == 200) {
           final data = json.decode(refreshResponse.body);
@@ -184,7 +191,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
     try {
       final response = await AuthService()
-          .requestNewOTP(email); // Call the AuthService method
+          .requestNewOTP(email)
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
 
       _isLoading = false;
       notifyListeners();
@@ -218,7 +226,8 @@ class AuthenticationProvider extends ChangeNotifier {
 
     try {
       final response = await AuthService()
-          .verifyOTP(email, otp); // Call the AuthService method
+          .verifyOTP(email, otp)
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
 
       _isLoading = false;
       notifyListeners();
@@ -251,8 +260,9 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await AuthService().resetForgetPassword(
-          email, newPassword); // Call the AuthService method
+      final response = await AuthService()
+          .resetForgetPassword(email, newPassword)
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
 
       _isLoading = false;
       notifyListeners();
@@ -291,8 +301,9 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await AuthService().updatePassword(
-          oldPassword, newPassword); // Call the AuthService method
+      final response = await AuthService()
+          .updatePassword(oldPassword, newPassword)
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
 
       _isLoading = false;
       notifyListeners();
@@ -316,8 +327,9 @@ class AuthenticationProvider extends ChangeNotifier {
         }
 
         // Retry the request with the new token
-        final retryResponse =
-            await AuthService().updatePassword(oldPassword, newPassword);
+        final retryResponse = await AuthService()
+            .updatePassword(oldPassword, newPassword)
+            .timeout(const Duration(seconds: 10));
 
         if (retryResponse.statusCode == 200) {
           final retryData = json.decode(retryResponse.body);
@@ -361,15 +373,17 @@ class AuthenticationProvider extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      final response = await _authService.updateDrivingLicenseDetails(
-        firstName: firstName,
-        lastName: lastName,
-        country: country,
-        state: state,
-        licenseNumber: licenseNumber,
-        dateOfBirth: dateOfBirth,
-        expirationDate: expirationDate,
-      );
+      final response = await _authService
+          .updateDrivingLicenseDetails(
+            firstName: firstName,
+            lastName: lastName,
+            country: country,
+            state: state,
+            licenseNumber: licenseNumber,
+            dateOfBirth: dateOfBirth,
+            expirationDate: expirationDate,
+          )
+          .timeout(const Duration(seconds: 10));
 
       _isLoading = false;
       notifyListeners();
@@ -423,15 +437,17 @@ class AuthenticationProvider extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      final response = await _authService.completeUserProfile(
-        cnic: nationalIdCardNumber,
-        gender: gender,
-        streetNo: streetNo,
-        city: city,
-        state: state,
-        postalCode: postalCode,
-        country: country,
-      );
+      final response = await _authService
+          .completeUserProfile(
+            cnic: nationalIdCardNumber,
+            gender: gender,
+            streetNo: streetNo,
+            city: city,
+            state: state,
+            postalCode: postalCode,
+            country: country,
+          )
+          .timeout(const Duration(seconds: 10));
       _isLoading = false;
       notifyListeners();
 
@@ -461,8 +477,9 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response =
-          await AuthService().logout(); // Call the AuthService method
+      final response = await AuthService()
+          .logout()
+          .timeout(const Duration(seconds: 10)); // Call the AuthService method
 
       _isLoading = false;
       notifyListeners();
@@ -498,8 +515,9 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final String? profilePictureUrl =
-        await AuthService().updateProfilePicture(image.path);
+    final String? profilePictureUrl = await AuthService()
+        .updateProfilePicture(image.path)
+        .timeout(const Duration(seconds: 10));
 
     _isLoading = false;
     notifyListeners();
@@ -536,7 +554,6 @@ class AuthenticationProvider extends ChangeNotifier {
         createdAt: _user!.createdAt,
         updatedAt: _user!.updatedAt,
         profileCompletion: _user!.profileCompletion,
-        drivingLicenseDetails: _user!.drivingLicenseDetails,
         roleId: _user!.roleId,
       );
     }
@@ -553,7 +570,8 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _authService.becomeAHost();
+      final response =
+          await _authService.becomeAHost().timeout(const Duration(seconds: 10));
 
       // Stop loading
       _isLoading = false;

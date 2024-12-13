@@ -1,4 +1,5 @@
-import 'package:ajar/screens/starting_screen/starting_screen.dart';
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
+import 'package:ajar/screens/splash_start_onboarding_screens/starting_screen/starting_screen.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingProvider with ChangeNotifier {
@@ -42,20 +43,18 @@ class OnboardingProvider with ChangeNotifier {
       notifyListeners();
     } else {
       // Navigate to the next screen after onboarding
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const StartingScreen(),
+      Navigator.of(context).pushReplacement(
+        SlidePageRoute(
+          page: const StartingScreen(),
         ),
       );
     }
   }
 
   void goToLastPage(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const StartingScreen(),
+    Navigator.of(context).pushReplacement(
+      SlidePageRoute(
+        page: const StartingScreen(),
       ),
     );
   }

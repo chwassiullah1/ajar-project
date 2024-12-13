@@ -2,7 +2,7 @@
 
 import 'package:ajar/common/buttons/custom_gradient_button.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
-import 'package:ajar/common/textformfields/custom_text_form_field.dart';
+import 'package:ajar/common/text_form_fields/custom_text_form_field.dart';
 import 'package:ajar/providers/profile_updation/profile_updation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,16 +20,16 @@ class DrivingLicenseInfoComplete extends StatelessWidget {
 
     return Consumer2<ProfileUpdationProvider, AuthenticationProvider>(
       builder: (context, profileUpdationProvider, authProvider, child) {
-        return SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text(
-                "Driving License",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(
+              "Driving License",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            body: SingleChildScrollView(
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Form(
@@ -189,7 +189,7 @@ class DrivingLicenseInfoComplete extends StatelessWidget {
                                   .epirationDateController.text
                                   .trim(),
                             );
-
+                    
                             // Handle navigation based on status code
                             if (statusCode == 200) {
                               showCustomSnackBar(context,

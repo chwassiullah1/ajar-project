@@ -2,7 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationProvider extends ChangeNotifier {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
 
   final TextEditingController firstNameController = TextEditingController();
@@ -25,7 +25,7 @@ class RegistrationProvider extends ChangeNotifier {
   );
 
   bool get obscurePassword => _obscurePassword;
-  GlobalKey<FormState> get formKey => _formKey;
+  GlobalKey<FormState> get registerFormKey=> _registerFormKey;
 
   // Toggle password visibility
   void togglePasswordVisibility() {
@@ -53,7 +53,7 @@ class RegistrationProvider extends ChangeNotifier {
   }
 
   bool validateForm() {
-    return _formKey.currentState!.validate();
+    return _registerFormKey.currentState!.validate();
   }
 
   void clearFields() {

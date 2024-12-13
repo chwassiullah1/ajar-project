@@ -2,12 +2,13 @@
 
 import 'package:ajar/common/buttons/custom_gradient_button.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
-import 'package:ajar/common/textformfields/custom_text_form_field.dart';
+import 'package:ajar/common/text_form_fields/custom_text_form_field.dart';
 import 'package:ajar/providers/profile_updation/profile_updation_provider.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/authentication/authentication_provider.dart';
@@ -23,16 +24,16 @@ class ProfileCompleteScreen extends StatelessWidget {
 
     return Consumer2<ProfileUpdationProvider, AuthenticationProvider>(
       builder: (context, profileUpdationProvider, authProvider, child) {
-        return SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text(
-                "Complete Your Profile",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(
+              "Complete Your Profile",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            body: SingleChildScrollView(
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                 child: Form(
@@ -104,7 +105,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                                             children: [
                                               ListTile(
                                                 leading:
-                                                    const Icon(Icons.camera),
+                                                    const Icon(IconlyLight.camera),
                                                 title:
                                                     const Text('Take a photo'),
                                                 onTap: () async {
@@ -132,7 +133,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                                               ),
                                               ListTile(
                                                 leading:
-                                                    const Icon(Icons.photo),
+                                                    const Icon(IconlyLight.image),
                                                 title: const Text(
                                                     'Choose from gallery'),
                                                 onTap: () async {
@@ -233,7 +234,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                                 value); // Update gender in the provider
                           }
                         },
-
+                    
                         validator: (value) {
                           if (value == null) {
                             return 'Please select your gender';
@@ -363,7 +364,7 @@ class ProfileCompleteScreen extends StatelessWidget {
                                   .addressPostalCodeController.text
                                   .trim(),
                             );
-
+                    
                             // Handle navigation based on status code
                             if (statusCode == 200) {
                               showCustomSnackBar(

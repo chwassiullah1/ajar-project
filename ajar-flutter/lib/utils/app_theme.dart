@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'theme_colors_constants.dart';
+import 'theme_constants.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
+    colorSchemeSeed: fMainColor,
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
     brightness: Brightness.light,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      selectedItemColor: fMainColor,
-    ),
+        selectedItemColor: fMainColor, backgroundColor: Colors.white),
     checkboxTheme: CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
@@ -28,6 +30,8 @@ class AppTheme {
             color: fMainColor); // Border color for unchecked state
       }),
     ),
+    dialogTheme: const DialogTheme(backgroundColor: Colors.white),
+    cardColor: Colors.white,
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: fMainColor, // Sets the text color for TextButton
@@ -36,14 +40,15 @@ class AppTheme {
     radioTheme: RadioThemeData(
       fillColor: WidgetStateProperty.all(fMainColor), // Radio button fill color
     ),
-    datePickerTheme: const DatePickerThemeData(
-      rangeSelectionBackgroundColor: fMainColor,
-      dayStyle: TextStyle(color: Colors.black),
-      todayBackgroundColor: WidgetStatePropertyAll(fMainColor),
-      todayForegroundColor: WidgetStatePropertyAll(Colors.white),
-    ),
+    // datePickerTheme: const DatePickerThemeData(
+    //   rangeSelectionBackgroundColor: fMainColor,
+    //   dayStyle: TextStyle(color: Colors.black),
+    //   todayBackgroundColor: WidgetStatePropertyAll(fMainColor),
+    //   todayForegroundColor: WidgetStatePropertyAll(Colors.white),
+    // ),
     textTheme: _buildTextTheme(),
   );
+
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,

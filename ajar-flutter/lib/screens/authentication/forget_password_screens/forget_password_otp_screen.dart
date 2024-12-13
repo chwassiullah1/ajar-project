@@ -2,7 +2,7 @@
 
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
 import 'package:ajar/screens/authentication/forget_password_screens/set_new_password_screen.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +23,7 @@ class ForgetPasswordOtpScreen extends StatefulWidget {
 class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
   String otp = ''; // Variable to store OTP input
   bool isOtpValid = false; // Track if OTP length is valid (6 digits)
+  final _forgetOtpFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +32,9 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
     Brightness brightness = Theme.of(context).brightness;
     bool isDarkMode = brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,6 +57,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
               ),
               const SizedBox(height: 30),
               PinCodeTextField(
+                key: _forgetOtpFormKey,
                 appContext: context,
                 length: 6,
                 cursorHeight: 19,
@@ -91,7 +93,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                           widget.email,
                           otp,
                         );
-
+            
                         if (statusCode == 200) {
                           // Navigate to Set New Password screen
                           Navigator.pushReplacement(
@@ -103,8 +105,10 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                           );
                         } else if (statusCode == 400) {
                           // Inform the user about the bad request
-                          showCustomSnackBar(context,
-                              "Invalid OTP or Enter All 6 Digits!.", Colors.red);
+                          showCustomSnackBar(
+                              context,
+                              "Invalid OTP or Enter All 6 Digits!.",
+                              Colors.red);
                         } else {
                           // Handle other error codes
                           showCustomSnackBar(

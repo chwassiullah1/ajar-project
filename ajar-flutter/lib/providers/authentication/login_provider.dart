@@ -1,36 +1,15 @@
 import 'package:flutter/material.dart';
 
 class LoginProvider extends ChangeNotifier {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   bool get obscurePassword => _obscurePassword;
-  GlobalKey<FormState> get formKey => _formKey;
+  GlobalKey<FormState> get loginFormKey => _loginFormKey;
   // Add FocusNodes for both fields
-  final FocusNode emailFocusNode = FocusNode();
-  final FocusNode passwordFocusNode = FocusNode();
 
-
-  LoginProvider() {
-    // Attach listeners to FocusNodes to clear error when field is focused
-    emailFocusNode.addListener(() {
-      if (emailFocusNode.hasFocus) {
-        // Clear the email field error
-        emailController.clear(); // Optional: Clear text on focus if desired
-        notifyListeners();
-      }
-    });
-
-    passwordFocusNode.addListener(() {
-      if (passwordFocusNode.hasFocus) {
-        // Clear the password field error
-        passwordController.clear(); // Optional: Clear text on focus if desired
-        notifyListeners();
-      }
-    });
-  }
   // Toggle password visibility
   void togglePasswordVisibility() {
     _obscurePassword = !_obscurePassword;
@@ -38,7 +17,7 @@ class LoginProvider extends ChangeNotifier {
   }
 
   bool validateForm() {
-    return _formKey.currentState!.validate();
+    return _loginFormKey.currentState!.validate();
   }
 
   // Dispose the controllers
@@ -46,5 +25,10 @@ class LoginProvider extends ChangeNotifier {
     passwordController.dispose();
     emailController.dispose();
     notifyListeners();
+  }
+
+  void clearControllers() {
+    emailController.clear();
+    passwordController.clear();
   }
 }

@@ -136,4 +136,47 @@ class UserModel {
           : RoleModel(id: '', title: ''),
     );
   }
+
+    factory UserModel.fromJsonGetConversations(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      email: json['email'],
+      phone: json['phone'],
+      password: json['password'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      gender: json['gender'],
+      otp: json['otp'],
+      profilePicture: json['profile_picture'] != null
+          ? "${Constants.baseUrl}${json['profile_picture']}"
+          : 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small_2x/default-avatar-icon-of-social-media-user-vector.jpg',
+      cnic: json['cnic'] ?? '',
+      address: json['address'] != null
+          ? AddressModel.fromJson(json['address'])
+          : AddressModel(
+              streetNo: 0,
+              city: '',
+              state: '',
+              postalCode: '',
+              country: '',
+            ),
+      isAdmin: json['is_admin'],
+      isVerified: json['is_verified'],
+      roleId: json['role_id'],
+      drivingLicenseDetails: json['driving_license_details'] != null
+          ? DrivingLicenseDetails.fromJson(json['driving_license_details'])
+          : DrivingLicenseDetails(
+              firstName: '',
+              lastName: '',
+              country: '',
+              state: '',
+              licenseNumber: '',
+              dateOfBirth: '',
+              expirationDate: '',
+            ),
+      profileCompletion: json['profile_completion'].toString(),
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
+  }
 }

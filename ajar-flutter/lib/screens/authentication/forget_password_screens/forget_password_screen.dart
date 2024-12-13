@@ -1,12 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ajar/common/buttons/custom_gradient_button.dart';
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
-import 'package:ajar/common/textformfields/custom_text_form_field.dart';
+import 'package:ajar/common/text_form_fields/custom_text_form_field.dart';
 import 'package:ajar/providers/authentication/authentication_provider.dart';
 import 'package:ajar/providers/authentication/forget_password_provider.dart'; // Import your new provider
 import 'package:ajar/screens/authentication/forget_password_screens/forget_password_otp_screen.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +30,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
     return Consumer2<AuthenticationProvider, ForgetPasswordProvider>(
       builder: (context, authProvider, forgetPasswordProvider, child) {
-        return SafeArea(
-          child: Scaffold(
-            body: SingleChildScrollView(
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
@@ -97,7 +98,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                   );
 
                                   // Navigate to the OTP screen
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
@@ -108,6 +109,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       ),
                                     ),
                                   );
+                                  forgetPasswordProvider.emailController
+                                      .clear();
                                 } else if (statusCode == 400) {
                                   // Show failed OTP message
                                   showCustomSnackBar(
@@ -136,7 +139,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     isDarkMode ? Colors.white : Colors.black87,
                               ),
                               children: [
-                                
                                 TextSpan(
                                   text: "Sign up",
                                   style: const TextStyle(
@@ -145,11 +147,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RegisterScreen(),
+                                      Navigator.of(context).pushReplacement(
+                                        SlidePageRoute(
+                                          page: const RegisterScreen(),
                                         ),
                                       );
                                     },

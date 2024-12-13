@@ -1,8 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
 import 'package:ajar/screens/authentication/login_screen/login_screen.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ class OptVerificationScreen extends StatefulWidget {
 class _OptVerificationScreenState extends State<OptVerificationScreen> {
   String otp = ''; // Variable to store OTP input
   bool isOtpValid = false; // Track if OTP length is valid (6 digits)
+  final _otpFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,9 @@ class _OptVerificationScreenState extends State<OptVerificationScreen> {
     Brightness brightness = Theme.of(context).brightness;
     bool isDarkMode = brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,6 +57,7 @@ class _OptVerificationScreenState extends State<OptVerificationScreen> {
               ),
               const SizedBox(height: 30),
               PinCodeTextField(
+                key: _otpFormKey,
                 appContext: context,
                 length: 6,
                 cursorHeight: 19,
@@ -64,7 +67,7 @@ class _OptVerificationScreenState extends State<OptVerificationScreen> {
                     isOtpValid = otp.length == 6; // Check if OTP is 6 digits
                   });
                 },
-                cursorColor: Colors.blue,
+                cursorColor: fMainColor,
                 enableActiveFill: true,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 pinTheme: PinTheme(
@@ -92,14 +95,17 @@ class _OptVerificationScreenState extends State<OptVerificationScreen> {
                           email: widget.email,
                           otp: otp,
                         );
-
                         if (statusCode == 200) {
                           // OTP verified successfully, navigate to the Login screen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
+                          Navigator.of(context).pushReplacement(
+                            SlidePageRoute(
+                              page: const LoginScreen(),
                             ),
+                          );
+                          showCustomSnackBar(
+                            context,
+                            "Account is created successfully. You can login now.",
+                            Colors.green,
                           );
                         } else if (statusCode == 400) {
                           // User already verified or bad request

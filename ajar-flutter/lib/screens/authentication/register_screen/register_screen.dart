@@ -1,9 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ajar/common/buttons/custom_gradient_button.dart';
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
-import 'package:ajar/common/textformfields/custom_text_form_field.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/common/text_form_fields/custom_text_form_field.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/authentication/authentication_provider.dart';
@@ -23,9 +24,9 @@ class RegisterScreen extends StatelessWidget {
 
     return Consumer2<RegistrationProvider, AuthenticationProvider>(
         builder: (context, registrationProvider, authProvider, child) {
-      return SafeArea(
-        child: Scaffold(
-          body: LayoutBuilder(
+      return Scaffold(
+        body: SafeArea(
+          child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
@@ -35,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.07),
                     child: Form(
-                      key: registrationProvider.formKey,
+                      key: registrationProvider.registerFormKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -45,7 +46,7 @@ class RegisterScreen extends StatelessWidget {
                             text: TextSpan(
                               text: "Welcome to ",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w700,
                                 color: isDarkMode ? Colors.white : Colors.black,
                               ),
@@ -54,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
                                   text: "Ajar",
                                   style: TextStyle(
                                     color: fMainColor,
-                                    fontSize: 28,
+                                    fontSize: 24,
                                   ),
                                 ),
                               ],
@@ -188,11 +189,9 @@ class RegisterScreen extends StatelessWidget {
                                 // Handle navigation based on status code
                                 if (statusCode == 200) {
                                   // Navigate to OTP verification screen
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          OptVerificationScreen(
+                                  Navigator.of(context).pushReplacement(
+                                    SlidePageRoute(
+                                      page: OptVerificationScreen(
                                         email: registrationProvider
                                             .emailController.text
                                             .toLowerCase()
@@ -200,6 +199,7 @@ class RegisterScreen extends StatelessWidget {
                                       ),
                                     ),
                                   );
+                                  registrationProvider.clearFields();
                                 } else if (statusCode == 409) {
                                   // Show user already exists error
                                   showCustomSnackBar(context,
@@ -264,12 +264,13 @@ class RegisterScreen extends StatelessWidget {
     bool isDarkMode = brightness == Brightness.dark;
 
     return TextFormField(
+      cursorColor: fMainColor,
       controller: registrationProvider.phoneController,
-      maxLength: 10,
+      maxLength: 15,
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.number,
       style: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: isDarkMode ? Colors.white : Colors.grey.shade900,
       ),
       onChanged: (value) {

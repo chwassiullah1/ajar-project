@@ -1,7 +1,8 @@
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
 import 'package:ajar/providers/authentication/authentication_provider.dart';
 import 'package:ajar/screens/profile_updation_screens/driving_licesnse_info_complete.dart';
 import 'package:ajar/screens/profile_updation_screens/profile_updation_screen.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:ajar/utils/date_and_time_formatting.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,10 @@ class ProfileDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AuthenticationProvider>(
       builder: (context, authProvider, child) {
-        return SafeArea(
-          child: Scaffold(
-            body: SingleChildScrollView(
+        final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,24 +43,33 @@ class ProfileDetailsScreen extends StatelessWidget {
                           height: 80,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.grey.shade300,
+                            color:
+                                isDarkMode ? fMainColor : Colors.grey.shade300,
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(34.0),
-                            child: CachedNetworkImage(
-                              imageUrl: authProvider.user!.profilePicture!,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                child: SizedBox(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                            //   child: CachedNetworkImage(
+                            //     filterQuality: FilterQuality.low,
+                            //     imageUrl: authProvider.user!.profilePicture!,
+                            //     fit: BoxFit.cover,
+                            //     placeholder: (context, url) => Center(
+                            //       child: SizedBox(
+                            //         width: 40.0,
+                            //         height: 40.0,
+                            //         child: CircularProgressIndicator(
+                            //           color: isDarkMode
+                            //               ? Colors.white
+                            //               : Colors.black,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     errorWidget: (context, url, error) =>
+                            //         const Icon(Icons.error),
+                            //   ),
+                            // ),
+                            child: CircleAvatar(
+                              backgroundImage: CachedNetworkImageProvider(
+                                  authProvider.user!.profilePicture!),
                             ),
                           ),
                         ),
@@ -149,11 +160,9 @@ class ProfileDetailsScreen extends StatelessWidget {
                         const Spacer(),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const ProfileCompleteScreen(),
+                            Navigator.of(context).push(
+                              SlidePageRoute(
+                                page: const ProfileCompleteScreen(),
                               ),
                             );
                           },
@@ -208,12 +217,11 @@ class ProfileDetailsScreen extends StatelessWidget {
                         const Spacer(),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const DrivingLicenseInfoComplete(),
-                                ));
+                            Navigator.of(context).push(
+                              SlidePageRoute(
+                                page: const DrivingLicenseInfoComplete(),
+                              ),
+                            );
                           },
                           child: const Text(
                             "Edit",

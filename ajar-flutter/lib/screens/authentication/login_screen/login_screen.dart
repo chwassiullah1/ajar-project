@@ -1,13 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ajar/common/buttons/custom_gradient_button.dart';
+import 'package:ajar/common/slide_page_routes/slide_page_route.dart';
 import 'package:ajar/common/snakbar/custom_snakbar.dart';
-import 'package:ajar/common/textformfields/custom_text_form_field.dart';
+import 'package:ajar/common/text_form_fields/custom_text_form_field.dart';
 import 'package:ajar/providers/authentication/authentication_provider.dart';
 import 'package:ajar/providers/authentication/login_provider.dart';
-import 'package:ajar/screens/authentication/forget_password_screens/forget_password_screen.dart';
 import 'package:ajar/screens/bottom_navigation_bar.dart';
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/screens/authentication/forget_password_screens/forget_password_screen.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,9 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Consumer2<AuthenticationProvider, LoginProvider>(
         builder: (context, authProvider, loginProvider, child) {
-      return SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
+      return Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
             // Wrap the content in a scrollable view
             child: Padding(
@@ -48,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: TextSpan(
                       text: "Welcome to ",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 24,
                         fontWeight: FontWeight.w700,
                         color: isDarkMode ? Colors.white : Colors.black,
                       ),
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           text: "Ajar",
                           style: TextStyle(
                             color: fMainColor,
-                            fontSize: 28,
+                            fontSize: 24,
                           ),
                         ),
                       ],
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
                   Form(
-                    key: loginProvider.formKey,
+                    key: loginProvider.loginFormKey,
                     child: Column(
                       children: [
                         CustomTextFormField(
@@ -129,11 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(left: 5),
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgetPasswordScreen(),
+                          Navigator.of(context).pushReplacement(
+                            SlidePageRoute(
+                              page: const ForgetPasswordScreen(),
                             ),
                           );
                         },
@@ -162,15 +161,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
 
                         if (statusCode == 200) {
+                          loginProvider.clearControllers();
                           // Login successful, navigate to the BottomNavigationBarScreen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const BottomNavigationBarScreen(),
+                          Navigator.of(context).pushReplacement(
+                            SlidePageRoute(
+                              page: const BottomNavigationBarScreen(),
                             ),
                           );
-                        } else if (statusCode == 401) {
+                          showCustomSnackBar(
+                              context, "login Successfully!", Colors.green);
+                        } else if (statusCode == 401 || statusCode == 400) {
                           // Invalid credentials
                           showCustomSnackBar(
                               context, "Invalid Credentials", Colors.red);
@@ -212,10 +212,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen(),
+                              Navigator.of(context).pushReplacement(
+                                SlidePageRoute(
+                                  page: const RegisterScreen(),
                                 ),
                               );
                             },

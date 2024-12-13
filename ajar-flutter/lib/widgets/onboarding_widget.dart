@@ -1,4 +1,4 @@
-import 'package:ajar/utils/theme_colors_constants.dart';
+import 'package:ajar/utils/theme_constants.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
